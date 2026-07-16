@@ -373,7 +373,7 @@ def show_screen(thing, grid):
     print("-" * 80)
     
     print("🗺️  КАРТА ДЖУНГЛІВ:")
-    print(draw_map(grid, player_row, player_col))
+    print(render_map(grid, player_row, player_col))
     print("-" * 80)
     
     if loc_id is not None:
