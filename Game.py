@@ -1,6 +1,8 @@
 import os
 import random 
 
+#-----------------------------------------------------------------------
+
 def pause():
     try:
         input("\n(Натисни Enter, щоб продовжити...)")
@@ -9,6 +11,8 @@ def pause():
 
 def clear_screen(): # ф-кція для очищення екрану(тобто щоб попередній текст зникав і кожен екран виглядав окремо)
     os.system("cls" if os.name == "nt" else "clear")
+
+#-----------------------------------------------------------------------
 
 def show_intro():
     clear_screen()
@@ -42,19 +46,19 @@ def show_intro():
     print("=" * 80)
     input("\nНатисни Enter, щоб почати...")
 
-def show_win(state):
+def show_win(thing):
     clear_screen()
     print("\n" + "=" * 80)
     print("                        🏆 ПЕРЕМОГА! 🏆")
     print("=" * 80)
     print("Ти переміг цю гру!!!")
-    print(f'{state["name"]}...')
-    print(f'Зібрано балів: {state["score"]}/100 ⭐')
+    print(f'{thing["name"]}...')
+    print(f'Зібрано балів: {thing["score"]}/100 ⭐')
     print()
     print("Ти знайшов всі потрібні матеріали і.....")
     print()
     print("Ти чуєш голос землі:")
-    print(f'"ДЯКУЮ, {state["name"].upper()}!')
+    print(f'"ДЯКУЮ, {thing["name"].upper()}!')
     print('ТИ ЗІБРАВ РОЗКИДАНІ СКАРБИ УКРАЇНИ.')
     print('ТЕПЕР ВОНА МАЄ СИЛУ ВІКІВ.')
     print('ТИ ВРЯТУВАВ ЇЇ ВІД ЗАБУТТЯ."')
@@ -65,13 +69,13 @@ def show_win(state):
     print("Твоє ім'я назавжди залишиться в легендах. 🥰")
     print("=" * 80)
 
-def show_extra_win(state):
+def show_extra_win(thing):
     clear_screen()
     print("\n" + "=" * 80)
     print("                        ⚡🌟 МАГІЧНА ПЕРЕМОГА 🌟⚡")
     print("=" * 80)
-    print(f'{state["name"]}...')
-    print(f'Зібрано балів: {state["score"]}/100 ⭐')
+    print(f'{thing["name"]}...')
+    print(f'Зібрано балів: {thing["score"]}/100 ⭐')
     print()
     print("Ти зробив неможливе!")
     print("Ти не просто зібрав усі бонуси - ти перевершив саму долю!")
@@ -85,14 +89,14 @@ def show_extra_win(state):
     print("Ти назавжди залишишся в наших серцях, ВЕЛИКИЙ МАГЕ!")
     print("=" * 80)
 
-def show_lose(state):
+def show_lose(thing):
     clear_screen()
     print("\n" + "=" * 80)
     print("                        💀 ВИ ЗАГИНУЛИ 💀")
     print("=" * 80)
     print()
-    print(f'{state["name"]}...')
-    print(f'Зібрано балів: {state["score"]}/100 ⭐')
+    print(f'{thing["name"]}...')
+    print(f'Зібрано балів: {thing["score"]}/100 ⭐')
     print("=" * 80)
     print("                        ❌ ГРА ЗАВЕРШЕНА ❌")
     print("=" * 80)
@@ -126,17 +130,77 @@ LAKE_STAT = [
     ("Узимку озеро завжди стає яскраво-фіолетовим.", False),
 ]
 
-# Кортежі для вибору предмету на початку
-CHEST_ITEMS = [
-    ("🗺️ Карта парку", -5, "Вона тобі не потрібна, пупупу."),
-    ("🧭 Компас", -1, "Ти випадково взяв поламаний компас."),
-    ("💧 Пляшка з водою", 25, "Тепер ти не помреш від спраги."),
-    ("🥪 Бутерброд", 9, "Тепер ти не помреш від голоду."),
-    ("🔦 Ліхтарик", 5, "Може, допоможе в печері."),
-    ("📷 Фотоапарат", 1, "Ці фото потім можна викласти в Інстаграм."),
-    ("🩹 Аптечка", 40, "Джекпот! Ти знайшов цінну знахідку."),
-]
 
+#-----------------------------------------------------------------------
+
+# Кортежі для вибору предмету на початку
+ITEM1 = ("🗺️ Карта парку", -5, "Вона тобі не потрібна.")
+ITEM2 = ("🧭 Компас", -1, "Ти взяв поламаний компас.")
+ITEM3 = ("💧 Пляшка з водою", 25, "Тепер ти не помреш від спраги.")
+ITEM4 = ("🥪 Бутерброд", 9, "Тепер ти не помреш від голоду.")
+ITEM5 = ("🔦 Ліхтарик", 5, "Може, допоможе в печері.")
+ITEM6 = ("📷 Фотоапарат", 1, "Фото викладеш в Інстаграм.")
+ITEM7 = ("🩹 Аптечка", 40, "Джекпот! Ти знайшов цінну знахідку!")
+ALL_ITEMS = (ITEM1, ITEM2, ITEM3, ITEM4, ITEM5, ITEM6, ITEM7)
+
+
+def chest_event(thing):
+    clear_screen()
+    
+    print("=" * 80)
+    print("🎒 Ти знайшов старий дерев'яний сундук!")
+    print("Всередині лежить декілька речей, але з собою можна взяти лише ОДНУ.")
+    print("=" * 80)
+    
+    print("1. " + ALL_ITEMS[0][0])  
+    print("2. " + ALL_ITEMS[1][0])  
+    print("3. " + ALL_ITEMS[2][0])  
+    print("4. " + ALL_ITEMS[3][0])  
+    print("5. " + ALL_ITEMS[4][0])  
+    print("6. " + ALL_ITEMS[5][0])  
+    print("7. " + ALL_ITEMS[6][0])  
+    print("=" * 80)
+    
+    choice = 0
+    while choice < 1 or choice > 7:
+        answer = input("Обери предмет (1-7): ")
+        try:
+            choice = int(answer)
+        except:
+            choice = 0
+        if choice < 1 or choice > 7:
+            print("❌ Введи число від 1 до 7.")
+    
+    item_number = choice - 1
+    item_name = ALL_ITEMS[item_number][0]
+    item_points = ALL_ITEMS[item_number][1]
+    item_message = ALL_ITEMS[item_number][2]
+    
+    thing["inventory"].append(item_name)
+    thing["score"] = thing["score"] + item_points
+    
+    print("")
+    print("Ти береш: " + item_name)
+    print(item_message)
+    
+    if item_points > 0:
+        print("Отримано +" +str(item_points)+ " балів!")
+    elif item_points < 0:
+        print("Втрачено " +str(item_points)+" балів!")
+    else:
+        print("Бали не змінились.")
+    
+    pause()
+
+#-----------------------------------------------------------------------
+
+WIDTH = 21
+HEIGHT = 15
+
+BORDER = "██"
+TREE = "🌳"
+BUSH = "🌿"
+EMPTY = "  "
 
 LOCATIONS = {
     0: {
@@ -247,6 +311,7 @@ def render_map(grid, player_row, player_col):
 
     rows = []
     for row in range(HEIGHT):
+
         line = ""
         for col in range(WIDTH):
             if row == player_row and col == player_col:
@@ -255,5 +320,7 @@ def render_map(grid, player_row, player_col):
                 line = line + grid[row][col] 
         
         rows.append(line)
-    
     return "\n".join(rows)
+
+
+#-----------------------------------------------------------------------
