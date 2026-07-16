@@ -387,3 +387,36 @@ def show_screen(thing, grid):
 
 #-----------------------------------------------------------------------
 
+def move_player(thing, grid, direction):
+    
+    row = thing["position"][0]
+    col = thing["position"][1]
+    
+    if direction == "w":
+        new_row = row - 1
+        new_col = col
+    elif direction == "s":
+        new_row = row + 1
+        new_col = col
+    elif direction == "a":
+        new_row = row
+        new_col = col - 1
+    elif direction == "d":
+        new_row = row
+        new_col = col + 1
+    else:
+        return  
+    
+    
+    if grid[new_row][new_col] == BORDER:
+        thing["health"] = thing["health"] - 100
+        print("🚫 Тут стіна! -100 здоров'я.")
+        pause()
+        return
+    
+
+    thing["position"] = [new_row, new_col]
+    
+    
+
+#-----------------------------------------------------------------------
