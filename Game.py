@@ -112,14 +112,6 @@ def show_lose(thing):
     print("=" * 80)
 
 
-WIDTH = 21
-HEIGHT = 15
-
-BORDER = "██"
-TREE = "🌳"
-BUSH = "🌿"
-EMPTY = "  "
-
 # Кортежі ля гри біля озера Лемурійського
 LAKE_STAT = [
     ("Лемурійське озеро розташоване в Херсонській області.", True),
@@ -323,4 +315,75 @@ def render_map(grid, player_row, player_col):
     return "\n".join(rows)
 
 
+
 #-----------------------------------------------------------------------
+
+def new_state(name):
+    thing = {
+        "name": name,
+        "health": 100,
+        "score": 0,
+        "inventory": [],        
+        "position": (3, 3),     
+        "visited": set(),       
+    }
+    return thing
+
+
+
+
+def show_screen(thing, grid):
+    
+    clear_screen()
+    player_row = thing["position"][0]
+    player_col = thing["position"][1]
+
+    loc_id = None
+    for loc in LOCATIONS_LIST:
+        if loc["row"] == player_row and loc["col"] == player_col:
+            loc_id = loc["id"]
+            break
+    
+    print("=" * 80)
+    print("               🌴  Jumanji in Ukraine  🌴")
+    print("=" * 80)
+    
+    hp = thing["health"]
+    if hp < 0:
+        hp = 0
+    print("👤 " + thing["name"] + " | " + str(hp) + "❤️ | ⭐ " + str(thing["score"]))
+    print("-" * 80)
+    
+
+    if loc_id is not None:
+        loc = LOCATIONS[loc_id]
+        print("📍 " + loc["name"] + " " + loc["emoji"])
+        if loc["npc"] == "":
+            print("👥 NPC: відсутні")
+        else:
+            print("👥 NPC: " + loc["npc"])
+    else:
+        print("📍 Джунглі")
+        print("👥 NPC: відсутні")
+    
+    if len(thing["inventory"]) == 0:
+        print("📦 Предмети: Немає")
+    else:
+        print("📦 Предмети: " + ", ".join(thing["inventory"]))
+    print("-" * 80)
+    
+    print("🗺️  КАРТА ДЖУНГЛІВ:")
+    print(draw_map(grid, player_row, player_col))
+    print("-" * 80)
+    
+    if loc_id is not None:
+        print("🏞️ Про місце:")
+        print(LOCATIONS[loc_id]["about"])
+        print("-" * 80)
+    
+    print("WASD - рух | E - взаємодія | I - інвентар | Q - вихід")
+    print()
+    print("🌴 Шукай 💖 Серце Джунглів! Потрібно набрати рівно 100 балів.")
+
+#-----------------------------------------------------------------------
+
