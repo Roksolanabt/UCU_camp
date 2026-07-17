@@ -1,6 +1,6 @@
 import os
 import random 
-
+import datetime
 #-----------------------------------------------------------------------
 
 def pause():
@@ -313,7 +313,7 @@ def new_state(name):
         "health": 100,
         "score": 0,
         "inventory": [],        
-        "position": (3, 3),     
+        "position": (10, 13),     
         "visited": set(),       
         "zhivchyk_used": False,
     }
@@ -528,4 +528,21 @@ def event_extra(thing):
     print("✨ +100 балів! Ти знайшов таємний шлях до перемоги!")
     thing["visited"].add(5)
 
-print(event_extra(new_state("Тестovий гравець")))
+#-----------------------------------------------------------------------
+
+def save_result(thing, res):
+    health_to_show = thing["health"]
+    if health_to_show <= 0:
+        health_to_show = 0
+
+    line = (f'Ім\'я: {thing["name"]} | Результат: {res} | Бали: {thing["score"]} | Здоров\'я: {health_to_show} | Час: {datetime.datetime.now()}\n')
+
+    try:
+        with open("results.txt", "a") as f:
+            f.write(line)
+    except OSError as er:
+        print(f"⚠️ Не вдалося записати результат у файл: {er}")
+
+
+#------------------------------------------------------------------------
+
