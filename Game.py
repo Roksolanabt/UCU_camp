@@ -546,3 +546,23 @@ def save_result(thing, res):
 
 #------------------------------------------------------------------------
 
+def ask_yes_no(question):
+    answer = input(f"{question}: (так/ні) ").lower()
+    if answer == "так" or answer == "т":
+        return True
+    elif answer == "ні" or answer == "н":
+        return False
+    else:
+        print("❌ Введи 'так' або 'ні'.")
+        return ask_yes_no(question)
+    
+def check_end(thing):
+    if thing["health"] < 0:
+        return ("lose")
+    if thing["balance"] == 0:
+        return ("win")
+    if thing["balance"] > 0:
+        return ("extra_win")
+    return None
+    
+    
