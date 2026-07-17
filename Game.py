@@ -112,17 +112,6 @@ def show_lose(thing):
     print("=" * 80)
 
 
-# Кортежі ля гри біля озера Лемурійського
-LAKE_STAT = [
-    ("Лемурійське озеро розташоване в Херсонській області.", True),
-    ("У Лемурійському озері живуть дельфіни.", False),
-    ("Рожевий колір з'являється завдяки мікроводоростям.", True),
-    ("Озеро повністю прісне.", False),
-    ("Через високу солоність вода добре тримає людину на поверхні.", True),
-    ("Узимку озеро завжди стає яскраво-фіолетовим.", False),
-]
-
-
 #-----------------------------------------------------------------------
 
 # Кортежі для вибору предмету на початку
@@ -326,6 +315,7 @@ def new_state(name):
         "inventory": [],        
         "position": (3, 3),     
         "visited": set(),       
+        "zhivchyk_used": False,
     }
     return thing
 
@@ -463,5 +453,79 @@ def event_fortress(thing):
         print(f'🍀 Пощастило! +20 балів, -15 здоров\'я. Отримано предмет: {LOCATIONS[2]["item"]}')
 
 
+def event_lake(thing):
+    if 3 in thing["visited"]:
+        print("\n🧜 Лемура дрімає на березі. Тут ти вже все дізнався.")
+        return
+
+    print("\n🧜 Лемура пропонує перевірити твої знання:")
+
+    print("1. Озеро Синевир - найглибше озеро в Україні? (1/2)")
+    вибір = input("1 - Так, 2 - Ні: ")
+    if вибір == "1":
+        thing["score"] += 10
+        print("✅ +10 балів")
+    else:
+        thing["health"] -= 20
+        thing["score"] -= 5
+        print("❌ -20 здоров'я, -5 балів")
 
 
+    print("2. В озері водяться акули? (1/2)")
+    вибір = input("1 - Так, 2 - Ні: ")
+    if вибір == "2":
+        thing["score"] += 10
+        print("✅ +10 балів")
+    else:
+        thing["health"] -= 20
+        thing["score"] -= 5
+        print("❌ -20 здоров'я, -5 балів")
+
+
+    print("3. Озеро Синевир знаходиться в Карпатах? (1/2)")
+    вибір = input("1 - Так, 2 - Ні: ")
+    if вибір == "1":
+        thing["score"] += 10
+        print("✅ +10 балів")
+    else:
+        thing["health"] -= 20
+        thing["score"] -= 5
+        print("❌ -20 здоров'я, -5 балів")
+    
+
+    thing["inventory"].append("Сльоза Лемури")
+    print("🧜 Отримано: Сльоза Лемури")
+    thing["visited"].add(3)
+
+def event_mountains(thing):
+    if 4 in thing["visited"]:
+        print("\n💪 Живчик уже допоміг тобі раніше.")
+        return
+
+    if thing["zhivchyk_used"] == False:
+        thing["health"] += 10
+        thing["zhivchyk_used"] = True
+        print("💪 Живчик ділиться силою! +10 здоров'я.")
+
+    print("Живчик посміхається і запитує:")
+    answer = input("Яка область Славська? ").lower()
+
+    if answer == "львів" or answer == "львівська" or answer == "львівщина":
+        thing["score"] += 30
+        thing["inventory"].append(LOCATIONS[4]["item"])
+        print(f'✅ Правильно! +30 балів. Отримано предмет: {LOCATIONS[4]["item"]}')
+    else:
+        thing["health"] = 0
+        print("❌ Неправильно... Гори не пробачають помилок. Гра завершена.")
+
+    thing["visited"].add(4)
+
+def event_extra(thing):
+    if 5 in thing["visited"]:
+        return
+    print("\n🟢 Портал засвічується магічним світлом!")
+    thing["score"] += 100
+    print("✨ +100 балів! Ти знайшов таємний шлях до перемоги!")
+    thing["visited"].add(5)
+
+print(event_extra(new_state("Тестovий гравець")))
