@@ -313,7 +313,7 @@ def new_state(name):
         "health": 100,
         "score": 0,
         "inventory": [],        
-        "position": (10, 13),     
+        "position": (3, 3),     
         "visited": set(),       
         "zhivchyk_used": False,
     }
@@ -397,6 +397,9 @@ def move_player(thing, grid, direction):
     else:
         return  
     
+    if new_row < 0 or new_row >= HEIGHT or new_col < 0 or new_col >= WIDTH:
+        thing["health"] = 0
+        return
     
     if grid[new_row][new_col] == BORDER:
         thing["health"] = thing["health"] - 100
@@ -538,11 +541,42 @@ def save_result(thing, res):
     line = (f'Ім\'я: {thing["name"]} | Результат: {res} | Бали: {thing["score"]} | Здоров\'я: {health_to_show} | Час: {datetime.datetime.now()}\n')
 
     try:
-        with open("results.txt", "a") as f:
+        with open("results.txt", "a", encoding="utf-8", errors="ignore") as f:
             f.write(line)
     except OSError as er:
         print(f"⚠️ Не вдалося записати результат у файл: {er}")
 
+#-----------------------------------------------------------------------
+
+def interact(thing):
+    clear_screen()
+    row = thing["position"][0]
+    col = thing["position"][1]
+
+    loc_id = None
+    for loc in LOCATIONS_LIST:
+        if loc["row"] == row and loc["col"] == col:
+            loc_id = loc["id"]
+            break
+
+    if loc_id is None:
+        print("\nТут немає з ким чи чим взаємодіяти.")
+        return
+
+    if loc_id == 0:
+        print("\n📦 Сундук уже порожній, тут більше немає предметів.")
+    elif loc_id == 1:
+        event_cave(thing)
+    elif loc_id == 2:
+        event_fortress(thing)
+    elif loc_id == 3:
+        event_lake(thing)
+    elif loc_id == 4:
+        event_mountains(thing)
+    elif loc_id == 5:
+        event_extra(thing)
+    else:
+        print("\nНічого не відбувається.")
 
 #------------------------------------------------------------------------
 
@@ -599,4 +633,79 @@ def ask_name():
               continue
           else:
               return name
+
+#-----------------------------------------------------------------------
+
+def play_session():
+    show_intro()
+    name = ask_name()
+    state = new_state(name)
+    grid = build_map()
+
+    chest_event(state)  # сундук на старті гри
+
+    status = None
+    while True:
+        show_screen(state, grid)
+
+        status = check_end(state)
+        if status is not None:
+            break
+
+        command = input("\n🎮 Дія (w/a/s/d/i/e/q): ").strip().lower()
+
+        match command:
+            case "w" | "a" | "s" | "d":
+                move_player(state, grid, command)
+            case "i":
+                show_inventory(state)
+            case "e":
+                interact(state)
+                pause()
+            case "q":
+                print("\nДо зустрічі, мандрівнику!")
+                return "quit"
+            case _:
+                clear_screen()
+                print("❓ Невідома команда. Використовуй w/a/s/d/i/e/q.")
+                pause()
+
+        status = check_end(state)
+        if status is not None:
+            break
+
+    if status == "win":
+        show_win(state)
+        save_result(state, "Перемога")
+    elif status == "extra_win":
+        show_extra_win(state)
+        save_result(state, "Магічна перемога")
+    elif status == "lose":
+        show_lose(state)
+        save_result(state, "Поразка")
+
+    return status
+
+
+def main():
+    while True:
+        try:
+            result = play_session()
+        except KeyboardInterrupt:
+            print("\n\nГру перервано.")
+            break
+
+        if result == "quit":
+            break
+
+        print()
+        again = ask_yes_no("✨ Спробувати ще раз?")
+        if again == False:
+            print("\nДякуємо за гру! До нових пригод по Україні! 🌴")
+            break
+
+
+if __name__ == "__main__":
+    main()
+
 
