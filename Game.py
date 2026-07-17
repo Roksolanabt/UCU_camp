@@ -45,29 +45,7 @@ def show_intro():
     print("- e - взаємодіяти з об'єктом (стоячи поруч)")
     print("=" * 80)
     input("\nНатисни Enter, щоб почати...")
-#!!!!!!!!!!!!!!!!!!!!!
-def ask_name():
-    clear_screen()
-    print("=" * 80)
-    print("                🌴 ЛАСКАВО ПРОСИМО ДО JUMANJI IN UKRAINE 🌴")
-    print("=" * 80)
-    print()
-    print("Ти стоїш на порозі великої пригоди...")
-    print("Попереду на тебе чекають загадкові місця України,")
-    print("небезпечні випробування та стародавні артефакти. 🗺️")
-    print()
-    print("Але спершу назви своє ім'я, мандрівнику.")
-    print()
-    while True:
-          name = input("Введи своє ім'я: ")
-          if name == " " or name == "":
-              print("Введи адекватне ім'я")
-              continue
-          else:
-              return name
 
-
-#!!!!!!!!!!!!!!!!!
 def show_win(thing):
     clear_screen()
     print("\n" + "=" * 80)
@@ -90,22 +68,8 @@ def show_win(thing):
     print("=" * 80)
     print("Твоє ім'я назавжди залишиться в легендах. 🥰")
     print("=" * 80)
-#!!!!!!!!!! інвентар
-def show_inventory(thing):
-    clear_screen()
-    print("=" * 80)
-    print(f'🎒 Інвентар мандрівника {thing["name"]}:')
-    print("=" * 80)
-    if len(thing["inventory"]) == 0:
-        print("Порожньо...")
-    else:
-        number = 1
-        for i in thing["inventory"]:
-            print(f"{number}. {i}")
-            number += 1
-    print("=" * 80)
-    pause()
-    #!!!!!!!!!!!!!!!
+
+
 def show_extra_win(thing):
     clear_screen()
     print("\n" + "=" * 80)
@@ -564,5 +528,3 @@ def event_extra(thing):
     thing["score"] += 100
     print("✨ +100 балів! Ти знайшов таємний шлях до перемоги!")
     thing["visited"].add(5)
-
-print(event_extra(new_state("Тестovий гравець")))
