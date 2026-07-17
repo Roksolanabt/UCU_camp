@@ -1,6 +1,6 @@
 import os
 import random 
-import datetime
+
 #-----------------------------------------------------------------------
 
 def pause():
@@ -68,6 +68,7 @@ def show_win(thing):
     print("=" * 80)
     print("Твоє ім'я назавжди залишиться в легендах. 🥰")
     print("=" * 80)
+
 
 def show_extra_win(thing):
     clear_screen()
