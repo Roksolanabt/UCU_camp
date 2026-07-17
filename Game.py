@@ -546,3 +546,57 @@ def save_result(thing, res):
 
 #------------------------------------------------------------------------
 
+def ask_yes_no(question):
+    answer = input(question + " (так/ні): ").lower()
+    if answer == "так" or answer == "т":
+        return True
+    elif answer == "ні" or answer == "н":
+        return False
+    else:
+        print("Будь ласка, введи 'так' або 'ні'.")
+    
+def check_end(state):
+    if state["health"] <= 0:
+        return "lose"
+    elif state["score"] > 100:
+        return "extra_win"
+    elif state["score"] == 100:
+        return "win"
+    else:
+        return None
+    
+def show_inventory(thing):
+    clear_screen()
+    print("=" * 80)
+    print(f'🎒 Інвентар мандрівника {thing["name"]}:')
+    print("=" * 80)
+    if len(thing["inventory"]) == 0:
+        print("Порожньо...")
+    else:
+        number = 1
+        for i in thing["inventory"]:
+            print(f"{number}. {i}")
+            number += 1
+    print("=" * 80)
+    pause()
+
+def ask_name():
+    clear_screen()
+    print("=" * 80)
+    print("                🌴 ЛАСКАВО ПРОСИМО ДО JUMANJI IN UKRAINE 🌴")
+    print("=" * 80)
+    print()
+    print("Ти стоїш на порозі великої пригоди...")
+    print("Попереду на тебе чекають загадкові місця України,")
+    print("небезпечні випробування та стародавні артефакти. 🗺")
+    print()
+    print("Але спершу назви своє ім'я, мандрівнику.")
+    print()
+    while True:
+          name = input("Введи своє ім'я: ")
+          if name == " " or name == "":
+              print("Введи адекватне ім'я")
+              continue
+          else:
+              return name
+
