@@ -420,3 +420,48 @@ def move_player(thing, grid, direction):
     
 
 #-----------------------------------------------------------------------
+
+
+
+def event_cave(thing):
+    if 1 in thing["visited"]:
+        print("\n🦇 Кажан Гриць мовчки дивиться на тебе. Тут уже нічого не лишилось.")
+        return
+
+    print("\n🦇 Кажан Гриць вилітає назустріч і шепоче загадку:")
+    print("Чи є висота Роман-Кош вищою за 1500 метрів?")
+    print("1 - Так")
+    print("2 - Ні")
+    
+    choice = input("Твій вибір: ")
+    
+    if choice == "1":
+        thing["score"] += 20
+        thing["inventory"].append("Мармуровий кристал")
+        print("✅ Правильно! +20 балів. Отримано: Мармуровий кристал")
+    else:
+        thing["health"] -= 100
+        print("❌ Неправильно! Печера обвалилась. -100 здоров'я")
+
+    thing["visited"].add(1)
+
+def event_fortress(thing):
+
+    print("\n🏛️ Тамтешній житель пропонує ризикнути на удачу...")
+    roll = random.randint(0, 1)
+
+    if roll == 1:
+        thing["score"] -= 10
+        thing["health"] -= 20
+        print("💧 Не пощастило! -10 балів, -20 здоров'я.")
+
+    else:
+        thing["score"] += 20
+        thing["health"] -= 15
+        if LOCATIONS[2]["item"] not in thing["inventory"]:
+            thing["inventory"].append(LOCATIONS[2]["item"])
+        print(f'🍀 Пощастило! +20 балів, -15 здоров\'я. Отримано предмет: {LOCATIONS[2]["item"]}')
+
+
+
+
