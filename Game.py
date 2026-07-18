@@ -1,6 +1,6 @@
 import os
 import random 
-
+import datetime
 #-----------------------------------------------------------------------
 
 def pause():
@@ -115,7 +115,6 @@ def show_lose(thing):
 
 #-----------------------------------------------------------------------
 
-# Кортежі для вибору предмету на початку
 ITEM1 = ("🗺️ Карта парку", -5, "Вона тобі не потрібна.")
 ITEM2 = ("🧭 Компас", -1, "Ти взяв поламаний компас.")
 ITEM3 = ("💧 Пляшка з водою", 25, "Тепер ти не помреш від спраги.")
@@ -536,7 +535,7 @@ def event_extra(thing):
 
 def save_result(thing, res):
     health_to_show = thing["health"]
-    if health_to_show <= 0:
+    if health_to_show < 0:
         health_to_show = 0
 
     line = (f'Ім\'я: {thing["name"]} | Результат: {res} | Бали: {thing["score"]} | Здоров\'я: {health_to_show} | Час: {datetime.datetime.now()}\n')
@@ -643,8 +642,7 @@ def play_session():
     state = new_state(name)
     grid = build_map()
 
-    chest_event(state)  # сундук на старті гри
-
+    chest_event(state)  
     status = None
     while True:
         show_screen(state, grid)
